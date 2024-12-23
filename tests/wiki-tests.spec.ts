@@ -51,7 +51,6 @@ test.describe('Wiki test', async () => {
             await articlePage.viewHistoryLink.click();
             await articlePage.verifySubTabSelected(articlePage.viewHistoryLink);
 
-           // Start waiting for new page before clicking. Note no await.
             const pagePromise = page.context().waitForEvent('page');
             await articlePage.helpLink.click();
             newPage = await pagePromise;

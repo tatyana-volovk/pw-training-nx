@@ -41,9 +41,6 @@ test.describe('API tests - successful requests', { tag: "@api" }, () => {
             expect(typeof responeBody.id).toEqual('number');
             expect(typeof responeBody.token).toEqual('string');
         })
-
-
-
     });
 });
 

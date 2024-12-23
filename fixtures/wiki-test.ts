@@ -9,8 +9,7 @@ type MyFixtures = {
   articlePage: ArticlePage;
 };
 
-// Extend base test by providing "todoPage" and "settingsPage".
-// This new "test" can be used in multiple test files, and each of them will get the fixtures.
+// Extend base test by providing "mainPage" and "articlePage".
 export const test = base.extend<MyFixtures>({
   page: async ({ page, baseURL }, use) => {
     await page.goto('/');
