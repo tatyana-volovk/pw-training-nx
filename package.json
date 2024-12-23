@@ -1,0 +1,26 @@
+{
+  "name": "nixtraining",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test:qa": "cross-env ENV=QA npx playwright test",
+    "test:prod": "cross-env ENV=PROD npx playwright test",
+    "test:qa:ui": "cross-env ENV=QA npx playwright test --headed --ui",
+    "test:prod:ui": "cross-env ENV=PROD npx playwright test --headed --ui",
+    "test:ui": "npx playwright test --headed --ui",
+    "test:api": "npx playwright test tests/api-tests.spec.ts "
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@types/node": "^22.10.2",
+    "cross-env": "^7.0.3"
+  },
+  "dependencies": {
+    "csv-parse": "^5.6.0",
+    "dotenv": "^16.4.7"
+  }
+}

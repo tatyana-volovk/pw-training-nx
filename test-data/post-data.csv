@@ -1,0 +1,4 @@
+id,test_case,email,password,error
+1,email only,eve.holt@reqres.in,,"Missing password"
+2,password only,,anypassword,"Missing email or username"
+3,unknown email,undefined@reqres.in,anypassword,"Note: Only defined users succeed registration"
