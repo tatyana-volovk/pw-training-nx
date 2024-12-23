@@ -11,7 +11,7 @@ type MyFixtures = {
 
 // Extend base test by providing "mainPage" and "articlePage".
 export const test = base.extend<MyFixtures>({
-  page: async ({ page, baseURL }, use) => {
+  page: async ({ page }, use) => {
     await page.goto('/');
     await use(page);
   },
