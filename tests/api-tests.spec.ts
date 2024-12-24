@@ -8,9 +8,10 @@ const records = parse(fs.readFileSync(path.join(__dirname, '../test-data/post-da
     columns: true,
     skip_empty_lines: true
 });
+let response: APIResponse;
 test.describe('API tests - successful requests', { tag: "@api" }, () => {
     test('Verify GET request', async ({ request }) => {
-        let response: APIResponse;
+        
         await test.step('Send GET request to https://reqres.in/api/login endpoint', async () => {
             response = await request.get(apiBaseURL + '/login');
         })
@@ -25,7 +26,6 @@ test.describe('API tests - successful requests', { tag: "@api" }, () => {
     });
 
     test('Verify POST request', async ({ request }) => {
-        let response: APIResponse;
         await test.step('Send POST request', async () => {
             response = await request.post(apiBaseURL + '/register', {
                 data: {
@@ -38,16 +38,18 @@ test.describe('API tests - successful requests', { tag: "@api" }, () => {
         await test.step('Check that the response is good and both "id" and "token" values have the expected types of data', async () => {
             expect(response).toBeOK();
             const responeBody = await response.json();
-            expect(typeof responeBody.id).toEqual('number');
-            expect(typeof responeBody.token).toEqual('string');
+            expect.soft(typeof responeBody.id).toEqual('number');
+            expect.soft(typeof responeBody.token).toEqual('string');
         })
     });
 });
 
-test.describe('Verify unsuccessful POST request', () => {
+test.describe('API tests - Verify unsuccessful POST request', 
+    {tag: '@api'},
+    () => {
+    test.skip(({ browserName }) => browserName !== 'chromium', 'API tests are supported only in Chromium');
     for (const record of records) {
         test(`${record.id}: ${record.test_case}`, async ({ request }) => {
-            let response: APIResponse;
             await test.step('Send POST request', async () => {
                 response = await request.post(apiBaseURL + '/register', {
                     data: {

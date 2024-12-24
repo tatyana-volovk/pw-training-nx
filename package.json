@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test:qa": "cross-env ENV=QA npx playwright test",
-    "test:prod": "cross-env ENV=PROD npx playwright test",
+    "test:qa": "cross-env ENV=QA npx playwright test --grep @ui",
+    "test:prod": "cross-env ENV=PROD npx playwright test --grep @ui",
     "test:qa:ui": "cross-env ENV=QA npx playwright test --headed --ui",
     "test:prod:ui": "cross-env ENV=PROD npx playwright test --headed --ui",
     "test:ui": "npx playwright test --headed --ui",
-    "test:api": "npx playwright test tests/api-tests.spec.ts "
+    "test:api": "npx playwright test --grep @api"
   },
   "keywords": [],
   "author": "",
