@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test:qa": "cross-env ENV=QA npx playwright test --grep @ui",
-    "test:prod": "cross-env ENV=PROD npx playwright test --grep @ui",
-    "test:qa:ui": "cross-env ENV=QA npx playwright test --headed --ui",
-    "test:prod:ui": "cross-env ENV=PROD npx playwright test --headed --ui",
-    "test:ui": "npx playwright test --headed --ui",
-    "test:api": "npx playwright test --grep @api"
+    "test:qa:ui": "cross-env ENV=QA npx playwright test --grep @ui",
+    "test:prod:ui": "cross-env ENV=PROD npx playwright test --grep @ui",
+    "test:api": "npx playwright test --grep @api",
+    "test:qa:all": "cross-env ENV=QA npx playwright test",
+    "test:prod:all": "cross-env ENV=PROD npx playwright test",
+    "test:qa:ui-mode": "cross-env ENV=QA npx playwright test --headed --ui",
+    "test:prod:ui-mode": "cross-env ENV=PROD npx playwright test --headed --ui"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +18,8 @@
   "devDependencies": {
     "@playwright/test": "^1.49.1",
     "@types/node": "^22.10.2",
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "eslint-plugin-playwright": "^2.1.0"
   },
   "dependencies": {
     "csv-parse": "^5.6.0",
