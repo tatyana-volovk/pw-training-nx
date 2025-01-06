@@ -1,19 +1,18 @@
 import fs from 'fs';
 import path from 'path';
-import { test, expect, APIResponse } from '@playwright/test';
+import { test, expect, APIResponse } from '../fixtures/api-test';
 import { parse } from 'csv-parse/sync';
 
-const apiBaseURL = 'https://reqres.in/api';
 const records = parse(fs.readFileSync(path.join(__dirname, '../test-data/post-data.csv')), {
     columns: true,
     skip_empty_lines: true
 });
 let response: APIResponse;
-test.describe('API tests - successful requests', { tag: "@api" }, () => {
-    test('Verify GET request', async ({ request }) => {
+test.describe('API tests - Verify successful requests', { tag: "@api" }, () => {
+    test('Verify GET request', async ({ apiRequest }) => {
         
         await test.step('Send GET request to https://reqres.in/api/login endpoint', async () => {
-            response = await request.get(apiBaseURL + '/login');
+            response = await apiRequest.get('login');
         })
         await test.step('Verify response status is good', async () => {
             expect(response).toBeOK();
@@ -25,9 +24,9 @@ test.describe('API tests - successful requests', { tag: "@api" }, () => {
         });
     });
 
-    test('Verify POST request', async ({ request }) => {
+    test('Verify POST request', async ({ apiRequest }) => {
         await test.step('Send POST request', async () => {
-            response = await request.post(apiBaseURL + '/register', {
+            response = await apiRequest.post('register', {
                 data: {
                     email: "eve.holt@reqres.in",
                     password: "anypassword"
@@ -47,11 +46,10 @@ test.describe('API tests - successful requests', { tag: "@api" }, () => {
 test.describe('API tests - Verify unsuccessful POST request', 
     {tag: '@api'},
     () => {
-    test.skip(({ browserName }) => browserName !== 'chromium', 'API tests are supported only in Chromium');
     for (const record of records) {
-        test(`${record.id}: ${record.test_case}`, async ({ request }) => {
+        test(`${record.id}: ${record.test_case}`, async ({ apiRequest }) => {
             await test.step('Send POST request', async () => {
-                response = await request.post(apiBaseURL + '/register', {
+                response = await apiRequest.post('register', {
                     data: {
                         email: record.email,
                         password: record.password,

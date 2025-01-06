@@ -18,7 +18,7 @@ export class ArticlePage extends BasePage {
         this.readLink = page.locator('#ca-view>a')
         this.editLink = page.locator('#ca-edit>a');
         this.viewHistoryLink = page.locator('#ca-history>a');
-        this.editConfirmationModal = page.locator('.oo-ui-window-content-setup');
+        this.editConfirmationModal = page.locator('.ve-init-mw-welcomeDialog .oo-ui-window-content');
         this.startEditingButton = page.getByRole('button', { name: process.env.START_EDIT_BUTTON });
         this.helpLink = page.locator('.mw-helplink');
         this.languagesButton = page.locator('#p-lang-btn');
@@ -26,10 +26,13 @@ export class ArticlePage extends BasePage {
         this.languagesDropdownItem = (lang) => page.locator('.uls-language-block').locator('visible=true').getByText(lang);
     }
 
+    async goTo(article: string){
+        await this.page.goto('/wiki/' + article.replaceAll(' ', '_'));
+    }   
     async changeLanguage(language: string){
         await this.languagesButton.click();
-        await this.languageSearchInput.fill(language);
-        await this.languagesDropdownItem(language).click();
+        await this.languageSearchInput.pressSequentially(language);
+        await this.languagesDropdownItem(language).click({ force: true });
     }
 
     async verifySubTabSelected(subTabLink: Locator){
