@@ -32,6 +32,8 @@ export class ArticlePage extends BasePage {
     async changeLanguage(language: string){
         await this.languagesButton.click();
         await this.languageSearchInput.pressSequentially(language);
+
+        // Added { force: true } to click method to avoid flakiness
         await this.languagesDropdownItem(language).click({ force: true });
     }
 

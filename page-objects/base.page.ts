@@ -3,7 +3,7 @@ import { Locator, Page } from "@playwright/test";
 export class BasePage {
     page: Page;
     searchInput: Locator;
-    searchResultsDropdownItem: any;
+    searchResultsDropdownItem: (title: string) => Locator;
     constructor(page:Page){
         this.page=page;
         this.searchInput = page.getByRole("search").getByRole("searchbox");

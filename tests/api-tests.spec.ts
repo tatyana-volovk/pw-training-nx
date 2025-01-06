@@ -15,7 +15,7 @@ test.describe('API tests - Verify successful requests', { tag: "@api" }, () => {
             response = await apiRequest.get('login');
         })
         await test.step('Verify response status is good', async () => {
-            expect(response).toBeOK();
+            await expect(response).toBeOK();
         });
 
         await test.step('Verify that 6 items are in "data" array in response', async () => {
@@ -35,7 +35,7 @@ test.describe('API tests - Verify successful requests', { tag: "@api" }, () => {
         });
 
         await test.step('Check that the response is good and both "id" and "token" values have the expected types of data', async () => {
-            expect(response).toBeOK();
+            await expect(response).toBeOK();
             const responeBody = await response.json();
             expect.soft(typeof responeBody.id).toEqual('number');
             expect.soft(typeof responeBody.token).toEqual('string');
