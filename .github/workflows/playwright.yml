@@ -23,7 +23,7 @@ jobs:
       if: ${{ !cancelled() }}
       with:
         name: playwright-report
-        path: playwright-report/
+        path: playwright-report-qa/
         retention-days: 30
 
   test-ui-prod:
@@ -44,7 +44,7 @@ jobs:
       if: ${{ !cancelled() }}
       with:
         name: playwright-report
-        path: playwright-report/
+        path: playwright-report-prod/
         retention-days: 30
 
   test-api:
@@ -65,5 +65,5 @@ jobs:
       if: ${{ !cancelled() }}
       with:
         name: playwright-report
-        path: playwright-report/
+        path: playwright-report-api/
         retention-days: 30
