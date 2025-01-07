@@ -1,32 +1,32 @@
-import fs from 'fs';
-import path from 'path';
-import { test, expect, APIResponse } from '../fixtures/api-test';
-import { parse } from 'csv-parse/sync';
+import fs from "fs";
+import path from "path";
+import { test, expect, APIResponse } from "../fixtures/api-test";
+import { parse } from "csv-parse/sync";
 
-const records = parse(fs.readFileSync(path.join(__dirname, '../test-data/post-data.csv')), {
+const records = parse(fs.readFileSync(path.join(__dirname, "../test-data/post-data.csv")), {
     columns: true,
     skip_empty_lines: true
 });
 let response: APIResponse;
-test.describe('API tests - Verify successful requests', { tag: "@api" }, () => {
-    test('Verify GET request', async ({ apiRequest }) => {
+test.describe("API tests - Verify successful requests", { tag: "@api" }, () => {
+    test("Verify GET request", async ({ apiRequest }) => {
         
-        await test.step('Send GET request to https://reqres.in/api/login endpoint', async () => {
-            response = await apiRequest.get('login');
+        await test.step("Send GET request to https://reqres.in/api/login endpoint", async () => {
+            response = await apiRequest.get("login");
         })
-        await test.step('Verify response status is good', async () => {
+        await test.step("Verify response status is good", async () => {
             await expect(response).toBeOK();
         });
 
-        await test.step('Verify that 6 items are in "data" array in response', async () => {
+        await test.step("Verify that 6 items are in 'data' array in response", async () => {
             const responeBody = await response.json();
             expect(responeBody.data).toHaveLength(6);
         });
     });
 
-    test('Verify POST request', async ({ apiRequest }) => {
-        await test.step('Send POST request', async () => {
-            response = await apiRequest.post('register', {
+    test("Verify POST request", async ({ apiRequest }) => {
+        await test.step("Send POST request", async () => {
+            response = await apiRequest.post("register", {
                 data: {
                     email: "eve.holt@reqres.in",
                     password: "anypassword"
@@ -34,22 +34,22 @@ test.describe('API tests - Verify successful requests', { tag: "@api" }, () => {
             });
         });
 
-        await test.step('Check that the response is good and both "id" and "token" values have the expected types of data', async () => {
+        await test.step("Check that the response is good and both 'id' and 'token' values have the expected types of data", async () => {
             await expect(response).toBeOK();
             const responeBody = await response.json();
-            expect.soft(typeof responeBody.id).toEqual('number');
-            expect.soft(typeof responeBody.token).toEqual('string');
+            expect.soft(typeof responeBody.id).toEqual("number");
+            expect.soft(typeof responeBody.token).toEqual("string");
         })
     });
 });
 
-test.describe('API tests - Verify unsuccessful POST request', 
-    {tag: '@api'},
+test.describe("API tests - Verify unsuccessful POST request", 
+    {tag: "@api"},
     () => {
     for (const record of records) {
         test(`${record.id}: ${record.test_case}`, async ({ apiRequest }) => {
-            await test.step('Send POST request', async () => {
-                response = await apiRequest.post('register', {
+            await test.step("Send POST request", async () => {
+                response = await apiRequest.post("register", {
                     data: {
                         email: record.email,
                         password: record.password,
@@ -57,7 +57,7 @@ test.describe('API tests - Verify unsuccessful POST request',
                 });
             });
 
-            await test.step('Check status is 400 and test of error message in response', async () => {
+            await test.step("Check status is 400 and test of error message in response", async () => {
                 expect(response.status()).toEqual(400);
                 const responeBody = await response.json();
                 expect(responeBody.error).toEqual(record.error);
