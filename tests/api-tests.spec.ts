@@ -8,6 +8,7 @@ const records = parse(fs.readFileSync(path.join(__dirname, "../test-data/post-da
     skip_empty_lines: true
 });
 let response: APIResponse;
+
 test.describe("API tests - Verify successful requests", { tag: "@api" }, () => {
     test("Verify GET request", async ({ apiRequest }) => {
         
