@@ -23,7 +23,7 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Check githubBaseRef
-      run: echo "githubBaseRef=$GITHUB_BASE_REF"
+      run: echo "githubBaseRef=${GITHUB_BASE_REF:='HEAD~1'}"
     - name: Run API Playwright tests
       run: npx playwright test --grep @api --only-changed=${GITHUB_BASE_REF:='HEAD~1'}
     - uses: actions/upload-artifact@v4
