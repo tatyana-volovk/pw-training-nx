@@ -5,11 +5,14 @@ on:
   pull_request:
     branches: [ main, master ]
 jobs:
-  test-ui-qa-affected:
+  test-ui-affected:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [QA, PROD]
     env:
-      ENV: QA
+      ENV: ${{ matrix.environment }}
     steps:
     - uses: actions/checkout@v4
       with:
@@ -21,37 +24,12 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-    - name: Run affected UI Playwright tests in QA environment
+    - name: Run affected UI Playwright tests
       run: npx playwright test --grep @ui --only-changed=$GITHUB_BASE_REF
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
-        name: playwright-report-qa
-        path: playwright-report/
-        retention-days: 30
-
-  test-ui-prod-affected:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    env:
-      ENV: PROD
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-    - name: Install dependencies
-      run: npm ci
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-    - name: Run UI Playwright tests in Production environment
-      run: npx playwright test --grep @ui --only-changed=$GITHUB_BASE_REF
-    - uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
-      with:
-        name: playwright-report-prod
+        name: playwright-report-ui-${{ matrix.environment }}
         path: playwright-report/
         retention-days: 30
 
@@ -69,6 +47,8 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+    - name: Check githubBaseRef
+      run: echo "githubBaseRef=$GITHUB_BASE_REF"
     - name: Run API Playwright tests
       run: npx playwright test --grep @api --only-changed=$GITHUB_BASE_REF
     - uses: actions/upload-artifact@v4
