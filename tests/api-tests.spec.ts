@@ -20,7 +20,7 @@ test.describe("API tests - Verify successful requests", { tag: "@api" }, () => {
 
         await test.step("Verify that 6 items are in 'data' array in response", async () => {
             const responeBody = await response.json();
-            expect(responeBody.data).toHaveLength(5);
+            expect(responeBody.data).toHaveLength(6);
         });
     });
 
