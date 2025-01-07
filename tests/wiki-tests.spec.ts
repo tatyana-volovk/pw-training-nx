@@ -6,9 +6,9 @@ const title = process.env.TITLE as string;
 const welcomeText = process.env.WELCOME_TEXT as string;
 const otherLanguage = process.env.OTHER_LANGUAGE as string;
 const otherLanguageTitle = process.env.OTHER_LANGUAGE_TITLE as string;
-test.describe('Wiki test', { tag: "@ui" }, () => {
-    test('Verify search, article edit and history, languages', async ({ mainPage, articlePage, page }, testInfo) => {
-        await test.step('Verfiy that Main page is opened', async () => {
+test.describe("Wiki test", { tag: "@ui" }, () => {
+    test("Verify search, article edit and history, languages", async ({ mainPage, articlePage, page }, testInfo) => {
+        await test.step("Verfiy that Main page is opened", async () => {
             await expect(mainPage.welcomeHeader).toContainText(welcomeText);
             await screenshot(testInfo, page, 'MainPage');
         });
@@ -17,7 +17,7 @@ test.describe('Wiki test', { tag: "@ui" }, () => {
             await mainPage.searchForAndSelectMatching(title);
         })
 
-        await test.step('Verify article title is expected', async () => {
+        await test.step("Verify article title is expected", async () => {
             await expect(articlePage.articleTitle).toHaveText(title);
             await screenshot(testInfo, page, 'ArticlePage');
         })
@@ -56,7 +56,7 @@ test.describe('Wiki test', { tag: "@ui" }, () => {
                 await articlePage.changeLanguage(otherLanguage);
             });
 
-        await test.step('Verify that appropriate article opens, take a screenshot', async () => {
+        await test.step("Verify that appropriate article opens, take a screenshot", async () => {
             await expect(articlePage.articleTitle).toHaveText(otherLanguageTitle);
             await screenshot(testInfo, page, 'TranslatedArticlePage');
         })
