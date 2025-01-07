@@ -5,6 +5,30 @@ on:
   pull_request:
     branches: main
 jobs:
+  test-api-affected:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Check githubBaseRef
+      run: echo "githubBaseRef=$GITHUB_BASE_REF"
+    - name: Run API Playwright tests
+      run: npx playwright test --grep @api --only-changed=$GITHUB_BASE_REF
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-report-api
+        path: playwright-report/
+        retention-days: 30
   test-ui-affected:
     timeout-minutes: 60
     runs-on: ubuntu-latest
@@ -31,29 +55,5 @@ jobs:
       if: ${{ !cancelled() }}
       with:
         name: playwright-report-ui-${{ matrix.environment }}
-        path: playwright-report/
-        retention-days: 30
-  test-api-affected:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-      with:
-        fetch-depth: 0
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-    - name: Install dependencies
-      run: npm ci
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-    - name: Check githubBaseRef
-      run: echo "githubBaseRef=$GITHUB_BASE_REF"
-    - name: Run API Playwright tests
-      run: npx playwright test --grep @api --only-changed=$GITHUB_BASE_REF
-    - uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
-      with:
-        name: playwright-report-api
         path: playwright-report/
         retention-days: 30
