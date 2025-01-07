@@ -5,41 +5,15 @@ on:
   pull_request:
     branches: main
 jobs:
-  test-ui-affected:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        environment: [QA, PROD]
-    env:
-      ENV: ${{ matrix.environment }}
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0  # Fetch all branch
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-    - name: Install dependencies
-      run: npm ci
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-    - name: Run affected UI Playwright tests
-      run: npx playwright test --grep @ui --only-changed=$GITHUB_BASE_REF
-    - uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
-      with:
-        name: playwright-report-ui-${{ matrix.environment }}
-        path: playwright-report/
-        retention-days: 30
   test-api-affected:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
+    - name: Set remote to origin
+      run: git remote set-url origin https://github.com/tatyana-volovk/pw-training-nx.git
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
@@ -55,5 +29,35 @@ jobs:
       if: ${{ !cancelled() }}
       with:
         name: playwright-report-api
+        path: playwright-report/
+        retention-days: 30
+  test-ui-affected:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [QA, PROD]
+    env:
+      ENV: ${{ matrix.environment }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Set remote to origin
+      run: git remote set-url origin https://github.com/tatyana-volovk/pw-training-nx.git
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run affected UI Playwright tests
+      run: npx playwright test --grep @ui --only-changed=$GITHUB_BASE_REF
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-report-ui-${{ matrix.environment }}
         path: playwright-report/
         retention-days: 30
