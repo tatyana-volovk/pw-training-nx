@@ -21,12 +21,14 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
+    - name: Set origin as default remote repo
+      run: git push -u origin --all
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run affected UI Playwright tests
-      run: npx playwright test --grep @ui --only-changed=origin/$GITHUB_BASE_REF
+      run: npx playwright test --grep @ui --only-changed=$GITHUB_BASE_REF
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
@@ -43,6 +45,8 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
+    - name: Set origin as default remote repo
+      run: git push -u origin --all
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
@@ -50,7 +54,7 @@ jobs:
     - name: Check githubBaseRef
       run: echo "githubBaseRef=$GITHUB_BASE_REF"
     - name: Run API Playwright tests
-      run: npx playwright test --grep @api --only-changed=origin/$GITHUB_BASE_REF
+      run: npx playwright test --grep @api --only-changed=$GITHUB_BASE_REF
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
