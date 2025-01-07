@@ -1,9 +1,9 @@
 name: Playwright Tests Affected
 on:
   push:
-    branches: [ main, master ]
+    branches: main
   pull_request:
-    branches: [ main, master ]
+    branches: main
 jobs:
   test-ui-affected:
     timeout-minutes: 60
