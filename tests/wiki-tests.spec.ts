@@ -29,7 +29,7 @@ test.describe("Wiki test", { tag: "@ui" }, () => {
             await screenshot(testInfo, page, 'EditModalShown');
         })
 
-        await test.step("Click 'Start editing' and verify that modal is hidden", async () => {
+        await test.step("Click 'Start editing' button and verify that modal is hidden", async () => {
             await articlePage.startEditingButton.click();
             await expect(articlePage.editConfirmationModal).toBeHidden();
             await screenshot(testInfo, page, 'EditModalHidden');
