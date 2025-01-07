@@ -1,11 +1,11 @@
-name: Playwright Tests
+name: Playwright Tests Affected
 on:
   push:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
 jobs:
-  test-ui-qa:
+  test-ui-qa-affected:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -17,8 +17,8 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-    - name: Run UI Playwright tests in QA environment
-      run: npm run test:qa:ui
+    - name: Run affected UI Playwright tests in QA environment
+      run: $env:ENV='qa'; npx playwright test --grep @ui --only-changed=$GITHUB_BASE_REF
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
@@ -26,7 +26,7 @@ jobs:
         path: playwright-report/
         retention-days: 30
 
-  test-ui-prod:
+  test-ui-prod-affected:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -37,7 +37,7 @@ jobs:
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+      run: $env:ENV='prod'; npx playwright test --grep @ui --only-changed=$GITHUB_BASE_REF
     - name: Run UI Playwright tests in Production environment
       run: npm run test:prod:ui
     - uses: actions/upload-artifact@v4
@@ -47,7 +47,7 @@ jobs:
         path: playwright-report/
         retention-days: 30
 
-  test-api:
+  test-api-affected:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -60,7 +60,7 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run API Playwright tests
-      run: npm run test:api
+      run: npx playwright test --grep @api --only-changed=$GITHUB_BASE_REF
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:

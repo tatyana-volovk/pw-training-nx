@@ -30,7 +30,7 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run UI Playwright tests in ${{github.event.inputs.environment}} in ${{ github.event.inputs.project }} browser
-      run: set ENV=${{github.event.inputs.environment}} npx playwright test --project=${{ github.event.inputs.project }}
+      run: $env:ENV='${{github.event.inputs.environment}}'; npx playwright test --project=${{ github.event.inputs.project }} --grep @ui
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
