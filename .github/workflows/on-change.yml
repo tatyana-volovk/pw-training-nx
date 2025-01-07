@@ -33,8 +33,7 @@ jobs:
         name: playwright-report-ui-${{ matrix.environment }}
         path: playwright-report/
         retention-days: 30
-
- test-api-affected:
+  test-api-affected:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
