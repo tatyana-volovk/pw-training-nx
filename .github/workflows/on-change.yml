@@ -34,7 +34,7 @@ jobs:
         path: playwright-report/
         retention-days: 30
 
-  test-api-affected:
+ test-api-affected:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
