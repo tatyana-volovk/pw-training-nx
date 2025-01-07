@@ -8,6 +8,8 @@ jobs:
   test-ui-qa-affected:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    env:
+      ENV: QA
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -18,7 +20,7 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run affected UI Playwright tests in QA environment
-      run: $env:ENV='qa'; npx playwright test --grep @ui --only-changed=$GITHUB_BASE_REF
+      run: npx playwright test --grep @ui --only-changed=$GITHUB_BASE_REF
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
@@ -29,6 +31,8 @@ jobs:
   test-ui-prod-affected:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    env:
+      ENV: PROD
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -37,9 +41,9 @@ jobs:
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
-      run: $env:ENV='prod'; npx playwright test --grep @ui --only-changed=$GITHUB_BASE_REF
+      run: npx playwright install --with-deps
     - name: Run UI Playwright tests in Production environment
-      run: npm run test:prod:ui
+      run: npx playwright test --grep @ui --only-changed=$GITHUB_BASE_REF
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:

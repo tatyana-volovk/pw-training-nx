@@ -7,8 +7,8 @@ on:
         required: true
         type: choice
         options:
-          - qa
-          - prod
+          - QA
+          - PROD
       project:
         description: 'Browser project to run tests against'
         required: true
@@ -29,8 +29,10 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-    - name: Run UI Playwright tests in ${{github.event.inputs.environment}} in ${{ github.event.inputs.project }} browser
-      run: $env:ENV='${{github.event.inputs.environment}}'; npx playwright test --project=${{ github.event.inputs.project }} --grep @ui
+    - name: Run UI Playwright tests in ${{ github.event.inputs.environment }} on ${{ github.event.inputs.project }}
+      env:
+        ENV: ${{ github.event.inputs.environment }}
+      run: npx playwright test --project=${{ github.event.inputs.project }} --grep @ui
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
