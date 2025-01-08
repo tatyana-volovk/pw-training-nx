@@ -6,6 +6,8 @@ const title = process.env.TITLE as string;
 const welcomeText = process.env.WELCOME_TEXT as string;
 const otherLanguage = process.env.OTHER_LANGUAGE as string;
 const otherLanguageTitle = process.env.OTHER_LANGUAGE_TITLE as string;
+const wikiHelpUrl = 'https://www.mediawiki.org/wiki/Help:History';
+
 test.describe("Wiki test", { tag: "@ui" }, () => {
     test("Verify search, article edit and history, languages", async ({ mainPage, articlePage, page }, testInfo) => {
         await test.step("Verfiy that Main page is opened", async () => {
@@ -44,7 +46,7 @@ test.describe("Wiki test", { tag: "@ui" }, () => {
             await articlePage.helpLink.click();
             newPage = await pagePromise;
 
-            await newPage.waitForURL('https://www.mediawiki.org/wiki/Help:History');
+            await newPage.waitForURL(wikiHelpUrl);
 
         });
 
