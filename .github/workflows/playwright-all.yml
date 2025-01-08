@@ -2,7 +2,7 @@ name: Playwright Tests All
 on:
   workflow_dispatch:
 jobs:
-  test-ui-qa:
+  test-ui:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     strategy:
@@ -16,7 +16,7 @@ jobs:
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+      run: npx playwright install --with-deps chromium webkit
     - name: Run UI Playwright tests in ${{ matrix.script-env }} environment
       run: npm run test:${{ matrix.script-env }}:ui
     - uses: actions/upload-artifact@v4
@@ -36,8 +36,6 @@ jobs:
         node-version: lts/*
     - name: Install dependencies
       run: npm ci
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
     - name: Run API Playwright tests
       run: npm run test:api
     - uses: actions/upload-artifact@v4

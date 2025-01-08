@@ -19,8 +19,6 @@ jobs:
         node-version: lts/*
     - name: Install dependencies
       run: npm ci
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
     - name: Calculate changed ref 
       run: echo "changed_ref=$([[ -n "${GITHUB_BASE_REF}" ]] && echo "origin/${GITHUB_BASE_REF}" || echo "HEAD~")" >> "$GITHUB_ENV"
     - name: Run API Playwright tests
@@ -52,7 +50,7 @@ jobs:
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+      run: npx playwright install --with-deps chromium webkit
     - name: Calculate changed ref 
       run: echo "changed_ref=$([[ -n "${GITHUB_BASE_REF}" ]] && echo "origin/${GITHUB_BASE_REF}" || echo "HEAD~")" >> "$GITHUB_ENV"
     - name: Run affected UI Playwright tests
