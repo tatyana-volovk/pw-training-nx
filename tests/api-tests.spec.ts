@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { test, expect, APIResponse } from "../fixtures/api-test";
+import { test, expect, APIResponse } from "@playwright/test";
 import { parse } from "csv-parse/sync";
 
 const records = parse(fs.readFileSync(path.join(__dirname, "../test-data/post-data.csv")), {
@@ -10,10 +10,10 @@ const records = parse(fs.readFileSync(path.join(__dirname, "../test-data/post-da
 let response: APIResponse;
 
 test.describe("API tests - Verify successful requests", { tag: "@api" }, () => {
-    test("Verify GET request", async ({ apiRequest }) => {
-        
+    test("Verify GET request", async ({ request }) => {
+
         await test.step("Send GET request to https://reqres.in/api/login endpoint", async () => {
-            response = await apiRequest.get("login");
+            response = await request.get("login");
         })
         await test.step("Verify response status is good", async () => {
             await expect(response).toBeOK();
@@ -25,9 +25,9 @@ test.describe("API tests - Verify successful requests", { tag: "@api" }, () => {
         });
     });
 
-    test("Verify POST request", async ({ apiRequest }) => {
+    test("Verify POST request", async ({ request }) => {
         await test.step("Send POST request", async () => {
-            response = await apiRequest.post("register", {
+            response = await request.post("register", {
                 data: {
                     email: "eve.holt@reqres.in",
                     password: "anypassword"
@@ -44,25 +44,25 @@ test.describe("API tests - Verify successful requests", { tag: "@api" }, () => {
     });
 });
 
-test.describe("API tests - Verify unsuccessful POST request", 
-    {tag: "@api"},
+test.describe("API tests - Verify unsuccessful POST request",
+    { tag: "@api" },
     () => {
-    for (const record of records) {
-        test(`${record.id}: ${record.test_case}`, async ({ apiRequest }) => {
-            await test.step("Send POST request", async () => {
-                response = await apiRequest.post("register", {
-                    data: {
-                        email: record.email,
-                        password: record.password,
-                    }
+        for (const record of records) {
+            test(`${record.id}: ${record.test_case}`, async ({ request }) => {
+                await test.step("Send POST request", async () => {
+                    response = await request.post("register", {
+                        data: {
+                            email: record.email,
+                            password: record.password,
+                        }
+                    });
                 });
-            });
 
-            await test.step("Check status is 400 and test of error message in response", async () => {
-                expect(response.status()).toEqual(400);
-                const responeBody = await response.json();
-                expect(responeBody.error).toEqual(record.error);
-            })
-        });
-    }
-})
+                await test.step("Check status is 400 and test of error message in response", async () => {
+                    expect(response.status()).toEqual(400);
+                    const responeBody = await response.json();
+                    expect(responeBody.error).toEqual(record.error);
+                })
+            });
+        }
+    })

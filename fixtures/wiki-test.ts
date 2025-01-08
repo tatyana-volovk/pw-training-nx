@@ -12,7 +12,6 @@ type MyFixtures = {
 // Extend base test by providing "mainPage" and "articlePage".
 export const test = base.extend<MyFixtures>({
   page: async ({ page }, use) => {
-    test.skip(!(['chromium', 'webkit'].includes(test.info().project.name)), 'Test can be executed only in Chrome and Safari!');
     await page.goto('/');
     await use(page);
   },

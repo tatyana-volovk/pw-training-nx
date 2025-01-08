@@ -21,42 +21,51 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
+      name: 'api',
+      use: {
+        baseURL: 'https://reqres.in/api/'
+      },
+      grep: /@api/
+    },
+    {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      grepInvert: /@api/
     },
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
+      grepInvert: /@api/
     },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+    // {
+    //   name: 'firefox',
+    //   use: { ...devices['Desktop Firefox'] },
       
-    },
-    {
-      name: 'Microsoft Edge',
-      use: { ...devices['Desktop Edge']},
-    },
+    // },
+    // {
+    //   name: 'Microsoft Edge',
+    //   use: { ...devices['Desktop Edge']},
+    // },
 
-    // /* Test against mobile viewports. */
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
-    },
+    // // /* Test against mobile viewports. */
+    // {
+    //   name: 'Mobile Chrome',
+    //   use: { ...devices['Pixel 5'] },
+    // },
+    // {
+    //   name: 'Mobile Safari',
+    //   use: { ...devices['iPhone 12'] },
+    // },
 
-    /* Test against branded browsers. */
-    {
-      name: 'Microsoft Edge',
-      use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    },
-    {
-      name: 'Google Chrome',
-      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    }
+    // /* Test against branded browsers. */
+    // {
+    //   name: 'Microsoft Edge',
+    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
+    // },
+    // {
+    //   name: 'Google Chrome',
+    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+    // }
   ],
 
 });
