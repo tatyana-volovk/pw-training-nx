@@ -12,7 +12,6 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-        ref: main
     - name: Set remote to origin
       run: git remote set-url origin https://github.com/tatyana-volovk/pw-training-nx.git
     - uses: actions/setup-node@v4
@@ -22,10 +21,10 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-    - name: Check githubBaseRef
-      run: echo "githubBaseRef=${GITHUB_BASE_REF:='HEAD~1'}"
+    - name: Calculate changed ref 
+      run: echo "changed_ref=$([[ -n "${GITHUB_BASE_REF}" ]] && echo "origin/${GITHUB_BASE_REF}" || echo "HEAD~")" >> "$GITHUB_ENV"
     - name: Run API Playwright tests
-      run: npx playwright test --grep @api --only-changed=${GITHUB_BASE_REF:='HEAD~1'}
+      run: npx playwright test --grep @api --only-changed=$changed_ref
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
@@ -55,8 +54,10 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+    - name: Calculate changed ref 
+      run: echo "changed_ref=$([[ -n "${GITHUB_BASE_REF}" ]] && echo "origin/${GITHUB_BASE_REF}" || echo "HEAD~")" >> "$GITHUB_ENV"
     - name: Run affected UI Playwright tests
-      run: npx playwright test --grep @ui --only-changed=${GITHUB_BASE_REF:='HEAD~1'}
+      run: npx playwright test --grep @ui --only-changed=$changed_ref
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
